@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = "/screens";
@@ -12,10 +13,10 @@ class _SplashState extends State<SplashScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-       /* Future.delayed(const Duration(seconds: 4), () async {
-          Navigator.popAndPushNamed(context, DashboardScreen.routeName,
+        Future.delayed(const Duration(seconds: 4), () async {
+          Navigator.popAndPushNamed(context, LoginScreen.routeName,
               arguments: {});
-        });*/
+        });
 
     }
 
