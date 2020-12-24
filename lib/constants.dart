@@ -7,3 +7,4 @@ InputDecoration inputDecoration(String labelText) {
       labelText: labelText,
       border: OutlineInputBorder());
 }
+const double kDefaultPadding = 20.0;

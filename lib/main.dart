@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/dashboard_screen.dart';
+import 'package:news_app/detail_screen.dart';
 import 'package:news_app/register_screen.dart';
 import 'package:news_app/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName:(context) =>RegisterScreen(),
         DashboardScreen.routeName:(context)=>DashboardScreen(),
+        DetailScreen.routeName:(context)=>DetailScreen()
       },
     );
   }
