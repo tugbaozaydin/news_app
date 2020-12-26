@@ -3,9 +3,10 @@ import 'constants.dart';
 
 class HeaderWithSearchBox extends StatelessWidget {
   final Size size;
+  final String title;
 
   const HeaderWithSearchBox({
-    Key key,this.size,
+    Key key,this.size, this.title,
   }): super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class HeaderWithSearchBox extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  "Hi Tuğba",
+                  title,
                   style: Theme.of(context).textTheme.headline5.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),Spacer(),

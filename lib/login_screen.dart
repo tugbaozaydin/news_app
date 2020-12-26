@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:news_app/preferences.dart';
 import 'package:news_app/register_screen.dart';
 
 import 'constants.dart';
@@ -59,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     email: usernameController.text,
                                     password: passwordController.text))
                             .user;
+                        Preferences().setEmail(user.email);
                         Navigator.popAndPushNamed(
                             context, DashboardScreen.routeName,
                             arguments: {});
@@ -94,6 +96,8 @@ class _LoginScreenState extends State<LoginScreen>
                             .instance
                             .signInWithCredential(googleAuthCredential);
                         final user = userCredential.user;
+                        Preferences().setEmail(user.email);
+
                       });
                     },
                   ),

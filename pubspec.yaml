@@ -41,9 +41,16 @@ dev_dependencies:
   http: 0.12.2
   flutter_launcher_icons: 0.8.1
   share: 0.6.5+4
-#  webview_flutter: 1.0.7
+  webview_flutter: 1.0.7
+  shared_preferences: ^0.5.12+4
+  provider: ^4.3.2+3
   webfeed:
     git: https://github.com/Adem68/webfeed.git
+
+flutter_icons:
+  image_path: "assets/splash.jpg"
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
