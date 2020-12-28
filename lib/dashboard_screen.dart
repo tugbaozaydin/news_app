@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/categori_button.dart';
 import 'package:news_app/detail_screen.dart';
 import 'package:news_app/feature_card.dart';
 import 'package:news_app/header_search.dart';
 import 'package:news_app/preferences.dart';
+import 'package:news_app/search_notifier.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
@@ -22,6 +24,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   List<RssItem> _list = [];
+
   String newName = "T 24";
   String version;
 
@@ -54,6 +57,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       var channel = RssFeed.parse(response.body);
       setState(() {
         _list = channel.items;
+        for(int i= 0; i<channel.categories.length; i++)
+        print(channel.categories[i].domain);
       });
     });
     Preferences().getNews().then((value) => newName = value);
@@ -65,22 +70,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final themeChange = Provider.of<DarkThemeProvider>(context);
-
+    var _listProvider = Provider.of<SearchNotifier>(context);
+    _listProvider.addSearch(_list);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: kPrimaryColor,
-        /*leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        ),*/
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -160,22 +158,35 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: newName,
               size: size,
             ),
+            Row(
+              children: [
+                CategoriButton(
+                  title: "Gündem",
+                ),
+                CategoriButton(
+                  title: "Dünya",
+                ),
+                CategoriButton(
+                  title: "Seyahat",
+                ),
+              ],
+            ),
             ListView.builder(
-                itemCount: _list.length,
+                itemCount: _listProvider.getSearch().length,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int item) {
                   return FeatureCard(
                       image: newName == "AA"
-                          ? _list[item].imageUrl
-                          : _list[item].enclosure.url,
-                      text: _list[item].title,
+                          ? _listProvider.list[item].imageUrl
+                          : _listProvider.list[item].enclosure.url,
+                      text: _listProvider.list[item].title,
                       press: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DetailScreen(list: _list[item]),
-
+                            builder: (context) =>
+                                DetailScreen(list: _listProvider.list[item]),
                           ),
                         );
                       });

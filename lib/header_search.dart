@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
+import 'package:news_app/search_notifier.dart';
+import 'package:provider/provider.dart';
+
 class HeaderWithSearchBox extends StatelessWidget {
   final Size size;
   final String title;
 
   const HeaderWithSearchBox({
-    Key key,this.size, this.title,
-  }): super(key: key);
+    Key key,
+    this.size,
+    this.title,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    var _listProvider = Provider.of<SearchNotifier>(context);
+
     return Container(
-      margin: EdgeInsets.only(bottom: kDefaultPadding*2.5),
+      margin: EdgeInsets.only(bottom: kDefaultPadding ),
       height: size.height * 0.2,
       child: Stack(
         children: [
           Container(
-            padding: EdgeInsets.only(left: kDefaultPadding,
+            padding: EdgeInsets.only(
+                left: kDefaultPadding,
                 right: kDefaultPadding,
-                bottom: 36+kDefaultPadding),
+                bottom:  kDefaultPadding),
             alignment: Alignment.center,
             height: size.height * 0.2 - 30,
             decoration: BoxDecoration(
@@ -32,8 +41,12 @@ class HeaderWithSearchBox extends StatelessWidget {
                   title,
                   style: Theme.of(context).textTheme.headline5.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold),
-                ),Spacer(),
-                Icon(Icons.title,color: Colors.white,)
+                ),
+                Spacer(),
+                Icon(
+                  Icons.title,
+                  color: Colors.white,
+                )
               ],
             ),
           ),
@@ -58,11 +71,13 @@ class HeaderWithSearchBox extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        _listProvider.search(value);
+                      },
                       decoration: InputDecoration(
-                        hintText: "Search",
-                        hintStyle: TextStyle(
-                            color: kPrimaryColor.withOpacity(0.5)),
+                        hintText: "Arama",
+                        hintStyle:
+                            TextStyle(color: kPrimaryColor.withOpacity(0.5)),
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         // suffixIcon: Icon(Icons.search)

@@ -4,10 +4,13 @@ import 'package:news_app/detail_screen.dart';
 import 'package:news_app/preferences.dart';
 import 'package:news_app/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:news_app/search_notifier.dart';
 import 'package:news_app/splash_screen.dart';
 import 'package:news_app/styles.dart';
 import 'package:provider/provider.dart';
 import 'dark_theme_provider.dart';
+import 'package:provider/provider.dart';
+
 import 'login_screen.dart';
 
 void main() async {
@@ -15,7 +18,11 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => SearchNotifier(),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -51,12 +58,12 @@ class _MyAppState extends State<MyApp> {
             title: 'Haberler',
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home:SplashScreen(),
+            home: SplashScreen(),
             routes: {
               LoginScreen.routeName: (context) => LoginScreen(),
               RegisterScreen.routeName: (context) => RegisterScreen(),
               DashboardScreen.routeName: (context) => DashboardScreen(),
-             // DetailScreen.routeName: (context) => DetailScreen()
+              // DetailScreen.routeName: (context) => DetailScreen()
             },
           );
         },

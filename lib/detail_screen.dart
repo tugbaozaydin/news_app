@@ -30,7 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kayıt Ol"),
+        title: Text("Detay"),
         backgroundColor: kPrimaryColor,
         actions: [IconButton(icon:Icon(Icons.share) , onPressed: (){
           Share.share(widget.list.link, subject: widget.list.title);
