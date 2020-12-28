@@ -8,7 +8,10 @@ import 'package:webfeed/webfeed.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'dark_theme_provider.dart';
+import 'login_screen.dart';
 import 'preferences.dart';
+import 'package:package_info/package_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DashboardScreen extends StatefulWidget {
   static String routeName = "/register";
@@ -20,12 +23,18 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<RssItem> _list = [];
   String newName = "T 24";
+  String version;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      setState(() {
+        version = packageInfo.version;
+      });
+    });
   }
 
   void getData() async {
@@ -123,29 +132,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               title: Text('Lisanslar'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                showLicensePage(context: context);
               },
             ),
             ListTile(
-              title: Text('Version'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+              title: Text('Version $version'),
             ),
             ListTile(
               title: Text('Geliştirici Hakkında'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+              subtitle: Text("Tuğba Özaydın"),
             ),
             ListTile(
               title: Text('Çıkış Yap'),
               onTap: () {
-                // Update the state of the app.
-                // ...
+                FirebaseAuth.instance.signOut();
+                Navigator.popAndPushNamed(context, LoginScreen.routeName,
+                    arguments: {});
               },
             ),
           ],
@@ -169,9 +171,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           : _list[item].enclosure.url,
                       text: _list[item].title,
                       press: () {
-                        Navigator.pushNamed(context, DetailScreen.routeName,
-                            arguments:
-                                DetailArg(_list[item].link, _list[item].title));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(list: _list[item]),
+
+                          ),
+                        );
                       });
                 })
           ],
@@ -180,40 +186,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // bottomNavigationBar: BottomNavigationBar(),
     );
   }
-}
 
-class BottomNavigationBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          left: kDefaultPadding * 2,
-          right: kDefaultPadding * 2,
-          bottom: kDefaultPadding),
-      height: 80,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            offset: Offset(0, -10),
-            blurRadius: 35,
-            color: kPrimaryColor.withOpacity(0.38))
-      ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: Icon(
-              Icons.star,
-              color: kPrimaryColor,
-            ),
-            onPressed: () {},
-          ),
-          IconButton(
-              icon: Icon(Icons.local_florist, color: kPrimaryColor),
-              onPressed: () {}),
-          IconButton(
-              icon: Icon(Icons.person, color: kPrimaryColor), onPressed: () {}),
-        ],
+  void showLicensePage({
+    @required BuildContext context,
+    String applicationName,
+    String applicationVersion,
+    Widget applicationIcon,
+    String applicationLegalese,
+    bool useRootNavigator = false,
+  }) {
+    assert(context != null);
+    assert(useRootNavigator != null);
+    Navigator.of(context, rootNavigator: useRootNavigator)
+        .push(MaterialPageRoute<void>(
+      builder: (BuildContext context) => LicensePage(
+        applicationName: applicationName,
+        applicationVersion: applicationVersion,
+        applicationIcon: applicationIcon,
+        applicationLegalese: applicationLegalese,
       ),
-    );
+    ));
   }
 }

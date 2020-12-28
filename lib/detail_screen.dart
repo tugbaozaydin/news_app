@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:webfeed/domain/rss_item.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:share/share.dart';
 
@@ -8,6 +9,10 @@ import 'constants.dart';
 
 class DetailScreen extends StatefulWidget {
   static String routeName = "/register";
+
+  final RssItem list;
+
+  DetailScreen({Key key, this.list}) : super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -23,27 +28,20 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final DetailArg args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Kayıt Ol"),
         backgroundColor: kPrimaryColor,
         actions: [IconButton(icon:Icon(Icons.share) , onPressed: (){
-          Share.share(args.link, subject: args.title);
+          Share.share(widget.list.link, subject: widget.list.title);
 
 
         })],
       ),
       body: WebView(
-        initialUrl: args.link,
+        initialUrl: widget.list.link,
       ),
     );
   }
 }
 
-class DetailArg {
-  final String link;
-  final String title;
-
-  DetailArg(this.link, this.title);
-}

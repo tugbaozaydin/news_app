@@ -44,6 +44,7 @@ dev_dependencies:
   webview_flutter: 1.0.7
   shared_preferences: ^0.5.12+4
   provider: ^4.3.2+3
+  package_info: ^0.4.3+2
   webfeed:
     git: https://github.com/Adem68/webfeed.git
 

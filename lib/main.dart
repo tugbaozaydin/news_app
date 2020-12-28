@@ -4,6 +4,7 @@ import 'package:news_app/detail_screen.dart';
 import 'package:news_app/preferences.dart';
 import 'package:news_app/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:news_app/splash_screen.dart';
 import 'package:news_app/styles.dart';
 import 'package:provider/provider.dart';
 import 'dark_theme_provider.dart';
@@ -29,7 +30,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getCurrentAppTheme();
-    Preferences().getEmail().then((value) => email = value);
   }
 
   DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
@@ -51,12 +51,12 @@ class _MyAppState extends State<MyApp> {
             title: 'Haberler',
             debugShowCheckedModeBanner: false,
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: email.isEmpty ? LoginScreen() : DashboardScreen(),
+            home:SplashScreen(),
             routes: {
               LoginScreen.routeName: (context) => LoginScreen(),
               RegisterScreen.routeName: (context) => RegisterScreen(),
               DashboardScreen.routeName: (context) => DashboardScreen(),
-              DetailScreen.routeName: (context) => DetailScreen()
+             // DetailScreen.routeName: (context) => DetailScreen()
             },
           );
         },
