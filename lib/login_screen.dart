@@ -85,6 +85,8 @@ class _LoginScreenState extends State<LoginScreen>
                           .signIn()
                           .then((GoogleSignInAccount googleUser) async {
                         print("başarılı");
+    Navigator.popAndPushNamed(context, DashboardScreen.routeName,
+    arguments: {});
                         final GoogleSignInAuthentication googleAuth =
                             await googleUser.authentication;
                         final GoogleAuthCredential googleAuthCredential =

@@ -1,3 +1,4 @@
+import 'package:news_app/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
@@ -19,7 +20,7 @@ class HeaderWithSearchBox extends StatelessWidget {
     var _listProvider = Provider.of<SearchNotifier>(context);
 
     return Container(
-      margin: EdgeInsets.only(bottom: kDefaultPadding ),
+      margin: EdgeInsets.only(bottom: kDefaultPadding),
       height: size.height * 0.2,
       child: Stack(
         children: [
@@ -27,7 +28,7 @@ class HeaderWithSearchBox extends StatelessWidget {
             padding: EdgeInsets.only(
                 left: kDefaultPadding,
                 right: kDefaultPadding,
-                bottom:  kDefaultPadding),
+                bottom: kDefaultPadding),
             alignment: Alignment.center,
             height: size.height * 0.2 - 30,
             decoration: BoxDecoration(

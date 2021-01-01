@@ -1,3 +1,4 @@
+import 'package:news_app/search_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/categori_button.dart';
@@ -57,8 +58,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       var channel = RssFeed.parse(response.body);
       setState(() {
         _list = channel.items;
-        for(int i= 0; i<channel.categories.length; i++)
-        print(channel.categories[i].domain);
+        for (int i = 0; i < channel.categories.length; i++)
+          print(channel.categories[i].domain);
       });
     });
     Preferences().getNews().then((value) => newName = value);
@@ -70,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final themeChange = Provider.of<DarkThemeProvider>(context);
-    var _listProvider = Provider.of<SearchNotifier>(context);
+    var _listProvider = Provider.of<SearchNotifier>(context, listen: true);
     _listProvider.addSearch(_list);
     return Scaffold(
       appBar: AppBar(
@@ -158,42 +159,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: newName,
               size: size,
             ),
-            Row(
-              children: [
-                CategoriButton(
-                  title: "Gündem",
-                ),
-                CategoriButton(
-                  title: "Dünya",
-                ),
-                CategoriButton(
-                  title: "Seyahat",
-                ),
-              ],
-            ),
-            ListView.builder(
-                itemCount: _listProvider.getSearch().length,
+            /*     Row(
+                children: [
+                  CategoriButton(
+                    title: "Gündem",
+                  ),
+                  CategoriButton(
+                    title: "Dünya",
+                  ),
+                  CategoriButton(
+                    title: "Seyahat",
+                  ),
+                ],
+              ),*/
+            Consumer<SearchNotifier>(builder: (context, val, Widget child) {
+              print(val.list.length);
+              return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int item) {
-                  return FeatureCard(
-                      image: newName == "AA"
-                          ? _listProvider.list[item].imageUrl
-                          : _listProvider.list[item].enclosure.url,
-                      text: _listProvider.list[item].title,
-                      press: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailScreen(list: _listProvider.list[item]),
-                          ),
-                        );
-                      });
-                })
+                child: ListView.builder(
+                    itemCount: val.list.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int item) {
+                      return FeatureCard(
+                          image: newName == "AA"
+                              ? val.list[item].imageUrl
+                              : val.list[item].enclosure.url,
+                          text: val.list[item].title,
+                          press: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailScreen(list: val.list[item]),
+                              ),
+                            );
+                          });
+                    }),
+              );
+            }),
           ],
         ),
       ),
+
       // bottomNavigationBar: BottomNavigationBar(),
     );
   }

@@ -10,13 +10,15 @@ class SearchNotifier extends ChangeNotifier {
 
   List<RssItem> getSearch() {
     return list;
+
   }
 
- List<RssItem> search(String searchQuery) {
+  List<RssItem> search(String searchQuery) {
     List<RssItem> _filteredList = list
-        .where((RssItem item) => item.title.toLowerCase().contains(searchQuery.toLowerCase()))
+        .where((RssItem item) =>
+            item.title.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
-    list=_filteredList;
+    list = _filteredList;
     notifyListeners();
   }
 
